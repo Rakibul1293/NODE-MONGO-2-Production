@@ -10,15 +10,13 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// DB_PATH = mongodb+srv://dbUser:KEFGgTrz8M9bkqA8@tmcluster-wbdpu.mongodb.net/test?retryWrites=true&w=majority
-// const uri = "mongodb://localhost:27017";
 const uri = process.env.DB_PATH;
 
 let client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const users = ["Asad", "Bashir", "Abdullah", "Mamun", "Zahid", "Tamim"];
 
 app.get('/products', (req, res) => {
-    client = new MongoClient(uri, { useNewUrlParser: true });
+    client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect(err => {
         // Database Connection
         const collection = client.db("onlineStore").collection("products");
@@ -31,7 +29,8 @@ app.get('/products', (req, res) => {
                 res.send(documents);
             }
         })
-        client.close();
+        console.log(err);
+        // client.close();
     });
 });
 
@@ -51,7 +50,7 @@ app.post('/addProduct', (req, res) => {
     const product = req.body;
     console.log(product);
 
-    client = new MongoClient(uri, { useNewUrlParser: true });
+    // client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect(err => {
         // Database Connection
         const collection = client.db("onlineStore").collection("products");
@@ -70,7 +69,7 @@ app.post('/addProduct', (req, res) => {
         })
         console.log(err);
         console.log("Database Connected ...... ");
-        client.close();
+        // client.close();
     });
 })
 
